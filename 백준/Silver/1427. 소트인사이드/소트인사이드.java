@@ -5,6 +5,6 @@ class Main {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		char[] N = br.readLine().toCharArray();
 		Arrays.sort(N);
-		System.out.println(new StringBuilder(new String(N)).reverse().toString());
+		for(int i=N.length-1; i>-1; i--) System.out.print(N[i]);
 	}
 }
