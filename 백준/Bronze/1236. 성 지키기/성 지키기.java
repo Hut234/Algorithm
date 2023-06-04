@@ -1,30 +1,34 @@
 import java.io.*;
-class Main{
-    public static void main(String[] args) throws IOException {
+class Main {
+	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		String[] NM = br.readLine().split(" ");
-		int N = Integer.parseInt(NM[0]); 
-		int M = Integer.parseInt(NM[1]); 
-		boolean[] row = new boolean[N];
-		boolean[] col = new boolean[M];
-		
-		for(int i=0; i<N; i++) {
-			char[] guard = br.readLine().toCharArray();
-			for(int j=0; j<M; j++) {
-				if(guard[j]=='X') {
-					row[i] = true;
-					col[j] = true;
-				}
+		String[] str = br.readLine().split(" ");
+		int N = Integer.parseInt(str[0]);
+		int M = Integer.parseInt(str[1]);
+		boolean[][] chk = new boolean[N][M];
+		int cnt = N;
+		int i = 0;
+		while(cnt-->0) {
+			char[] cArr = br.readLine().toCharArray();
+			for(int j=0; j<cArr.length; j++) {
+				if(cArr[j]=='X') chk[i][j] = true;
+			}
+			i++;
+		}
+		int colGuard = 0;
+		int rowGuard = 0;
+		for(int p=0; p<N; p++) {
+			for(int q=0; q<M; q++) {
+				if(chk[p][q]==true) break;
+				if(q==M-1) rowGuard++;
 			}
 		}
-		int rGuard = 0;
-		for(int i=0; i<N; i++) {
-			if(!row[i]) rGuard++;
-		}
-		int cGuard = 0;
-		for(int i=0; i<M; i++) {
-			if(!col[i]) cGuard++;
-		}
-		System.out.println(Integer.max(rGuard, cGuard));
-    }
+		for(int q=0; q<M; q++) {
+			for(int p=0; p<N; p++) {
+				if(chk[p][q]==true) break;
+				if(p==N-1) colGuard++;
+			}
+		}		
+		System.out.println(Integer.max(colGuard, rowGuard));
+	}
 }
