@@ -5,7 +5,6 @@ class Main {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int n = Integer.parseInt(br.readLine());
 		StringBuilder sb;
-		boolean isPerfect = true;
 		int sum;
 		while(n!=-1) {
 			sb = new StringBuilder(n + " = ");
