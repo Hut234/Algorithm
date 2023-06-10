@@ -6,11 +6,16 @@ class Main {
 		String[] input = br.readLine().split(" ");
 		int[] arr = new int[T];
 		for(int i=0; i<T; i++) arr[i] = Integer.parseInt(input[i]);
-		int sum, idx=0;
+		int sum, a, b, idx=0;
 		while(idx<T) {
 			sum = 0;
-			for(int i=2; i<arr[idx]; i++) {
-				if(arr[idx]%i==0) sum += i;
+			for(int i=2; i<=Math.sqrt(arr[idx]); i++) {
+				if(arr[idx]%i==0) {
+					a = i;
+					b = arr[idx]/i;
+					sum += a+b;
+					if(a==b) sum -= a;
+				}
 			}
 			if(arr[idx]!=1) sum +=1;
 			if(arr[idx]>sum) {
