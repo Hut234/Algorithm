@@ -5,27 +5,17 @@ class Main {
 		String[] input = br.readLine().split(" ");
 		int a = Integer.parseInt(input[0]);
 		int b = Integer.parseInt(input[1]);
-		long sum = 0;
-		if(a%2!=0) a += 1;
-		if(b%2!=0) b -= 1;
-		if(a==2) a += 2;
-		if(a>b) {
+		if(b<4) {
 			System.out.println(0);
 			return;
 		}
-		if(b-a==2) {
-			System.out.println(a+b);
-			return;
-		}else if(b-a==0) {
-			System.out.println(a);
-			return;
-		}
-		int half = (b-a+1)/2 +1;
-		if(half%2==0) {
-			sum = (long)(a+b)*half/2;
+		long bVal = (long) (b/2)*(b/2) + b/2;
+		long aVal;
+		if(a<3) {
+			aVal = 2;
 		} else {
-			sum = (long)(a+(b-2))*((half-1)/2) +b;
+			aVal = (long) ((a-1)/2)*((a-1)/2) + ((a-1)/2);
 		}
-		System.out.println(sum);
+		System.out.println(bVal-aVal);
 	}
 }
