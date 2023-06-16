@@ -6,10 +6,9 @@ class Main {
 		int a = Integer.parseInt(input[0]);
 		int b = Integer.parseInt(input[1]);
 		long sum = 0;
-		for(int i=a; i<=b; i++) {
-            if(i==2) continue;
-			if(i%2==0) sum+=i;
-		}
+		if(a%2!=0) a += 1;
+		if(a==2) a += 2;
+		for(int i=a;i<=b;i+=2) sum+=i;
 		System.out.println(sum);
 	}
 }
