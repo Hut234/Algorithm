@@ -23,7 +23,7 @@ class Main {
 					}
 					if(!prime[tmp]) break;
 				}
-				if(tmp!=1&&!prime[tmp]) curCnt++;
+				if(tmp!=1) curCnt++;
 				if(!prime[curCnt]) cnt++;
 			}
 		}
