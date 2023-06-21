@@ -4,26 +4,17 @@ class Main {
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int N = Integer.parseInt(br.readLine());
+		StringBuilder[] sbArr = new StringBuilder[201];
 		StringTokenizer st;
-		List<List<String>> list = new ArrayList<>();
-		for(int i=0; i<=100000; i++) {
-			list.add(new ArrayList<>());
-		}
 		int age;
 		while(N-->0) {
 			st = new StringTokenizer(br.readLine());
 			age = Integer.parseInt(st.nextToken());
-			String name = st.nextToken();
-			list.get(age).add(name);
+			if(sbArr[age]==null) sbArr[age] = new StringBuilder();
+			sbArr[age].append(age).append(" ").append(st.nextToken()).append("\n");
 		}
-		int idx = 0;
-		for(List<String> li : list) {
-			if(li.size()!=0) {
-				for(int i=0; i<li.size(); i++) {
-					System.out.println(idx + " " + li.get(i));
-				}
-			}
-			idx++;
+		for(StringBuilder sb : sbArr) {
+			if(sb!=null) System.out.print(sb.toString());
 		}
 	}
 }
