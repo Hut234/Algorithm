@@ -23,7 +23,6 @@ class Main {
     		if(prev>i) continue;
     		ARR[idx] = i; 
     		recur(idx+1, ARR[idx]);
-    		ARR[idx] = 0;
     	}
     }
 }
