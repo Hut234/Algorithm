@@ -18,7 +18,6 @@ class Main {
 		for(int i=N-1; i>-1; i--) {
 			DP[i] = Integer.max(DP[i+INFO[i][0]]+INFO[i][1], DP[i+1]);
 		}
-		Arrays.sort(DP);
-		System.out.println(DP[DP.length-1]);
+		System.out.println(DP[0]);
 	}
 }
