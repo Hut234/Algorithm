@@ -7,22 +7,18 @@ class Main {
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
-		DP = new int[N];
+		DP = new int[N+1000];
 		INFO = new int[N][2];
 		for(int i=0; i<N; i++) {
 			String[] info = br.readLine().split(" ");
 			INFO[i][0] = Integer.parseInt(info[0]);
 			INFO[i][1] = Integer.parseInt(info[1]);
 		}
-		recur(0);
+		Arrays.fill(DP, N+1, DP.length, Integer.MIN_VALUE);
+		for(int i=N-1; i>-1; i--) {
+			DP[i] = Integer.max(DP[i+INFO[i][0]]+INFO[i][1], DP[i+1]);
+		}
 		Arrays.sort(DP);
 		System.out.println(DP[DP.length-1]);
-	}
-	
-	private static int recur(int idx) {
-		if(idx==N) return 0;
-		if(idx>N) return Integer.MIN_VALUE;
-		if(DP[idx]!=0) return DP[idx];
-		return DP[idx] = Integer.max(recur(idx+INFO[idx][0])+INFO[idx][1], recur(idx+1));
 	}
 }
