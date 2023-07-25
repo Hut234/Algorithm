@@ -1,0 +1,2 @@
+import java.io.*;
+class Main{public static void main(String[] a) throws IOException {String[] s=(new BufferedReader(new InputStreamReader(System.in))).readLine().split(" ");int A=Integer.parseInt(s[0]),B=Integer.parseInt(s[1]),C=Integer.parseInt(s[2]);System.out.print(3*B/A*C);}}
