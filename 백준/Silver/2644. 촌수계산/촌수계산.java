@@ -3,8 +3,7 @@ import java.util.*;
 class Main {
 	private static int[] visited;
 	private static List<Integer>[] graph;
-	private static Queue<Integer> q = new LinkedList<>();
-	private static int a, b;
+	private static int a, b, result;
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int N = Integer.parseInt(br.readLine());
@@ -26,22 +25,17 @@ class Main {
 			graph[x].add(y);
 			graph[y].add(x);
 		}
-		bfs();
+		
+		visited[a] = 0;
+		dfs(a);
 		System.out.println(visited[b]);
 	}
 	
-	private static void bfs() {
-		q.offer(a);
-		visited[a] = 0;
-		int node;
-		while(!q.isEmpty()) {
-			node = q.poll();
-			if(node == b) return;
-			for(Integer i : graph[node]) {
-				if(visited[i]==-1) {
-					q.offer(i);
-					visited[i] = visited[node] +1;
-				}
+	private static void dfs(int idx) {
+		for(Integer i : graph[idx]) {
+			if(visited[i] == -1) {
+				visited[i] = visited[idx] +1;
+				dfs(i);
 			}
 		}
 	}
