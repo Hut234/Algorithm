@@ -4,7 +4,7 @@ class Main {
 	public static void main(String[] args) throws Exception {
 		int n = read();
 		int m = read();
-		
+		StringBuilder sb = new StringBuilder();
 		graph = new int[n+1];
 		rank = new int[n+1];
 		for(int i=0; i<=n; i++) {
@@ -17,9 +17,9 @@ class Main {
 			a = read();
 			b = read();
 			if(o==0) union(a, b);
-			else System.out.println(find(a)==find(b) ? "YES" : "NO");
+			else sb.append(find(a)==find(b) ? "YES" : "NO").append("\n");
 		}
-		
+		System.out.println(sb.toString());
 	}
 	static void union(int a, int b) {
 		int findA = find(a);
@@ -33,14 +33,15 @@ class Main {
 	}
 	static int find(int val) {
 		if(graph[val]==val) return val;
-		else return graph[val] = find(graph[val]);
+		return graph[val] = find(graph[val]);
 	}
-    static int read() throws Exception {
-        int c, n = 0;
-        while (true) {
-            c = System.in.read() - 48;
-            if (c < 0 || c > 9) return n;
-            n = n * 10 + c;
-        }
-    }
+  static int read() throws Exception {
+	int c, n = 0;
+	while (true) {
+	    c = System.in.read() - 48;
+	    if(c==-35) System.in.read();
+	    if (c < 0 || c > 9) return n;
+	    n = n * 10 + c;
+	}
+  }
 }
