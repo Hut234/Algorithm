@@ -22,9 +22,9 @@ class Main {
 		System.out.println(sb.toString());
 	}
 	static void union(int a, int b) {
+        if(a==b) return;
 		int findA = find(a);
 		int findB = find(b);
-		if(findA==findB) return;
 		if(rank[a]==rank[b]) {
 			graph[findA] = findB;
 			rank[b] += 1;
