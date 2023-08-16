@@ -7,10 +7,7 @@ class Main {
 		StringBuilder sb = new StringBuilder();
 		graph = new int[n+1];
 		rank = new int[n+1];
-		for(int i=0; i<=n; i++) {
-			graph[i] = i;
-			rank[i] = 1;
-		}
+		for(int i=0; i<=n; i++) graph[i] = i;
 		int o, a, b;
 		while(m-->0) {
 			o = read();
@@ -19,16 +16,18 @@ class Main {
 			if(o==0) union(a, b);
 			else sb.append(find(a)==find(b) ? "YES" : "NO").append("\n");
 		}
+		sb.deleteCharAt(sb.length()-1);
 		System.out.println(sb.toString());
 	}
 	static void union(int a, int b) {
-        if(a==b) return;
+		if(a==b) return;
 		int findA = find(a);
-		int findB = find(b);
-		if(rank[a]==rank[b]) {
+		int findB = find(b);	
+		if(findA==findB) return;
+		if(rank[findA]==rank[findB]) {
 			graph[findA] = findB;
-			rank[b] += 1;
-		} else if(rank[a]>rank[b]) graph[findB] = findA;
+			rank[findB] += 1;
+		} else if(rank[findA]>rank[findB]) graph[findB] = findA;
 		else graph[findA] = findB;
 	}
 	static int find(int val) {
@@ -39,7 +38,6 @@ class Main {
 	int c, n = 0;
 	while (true) {
 	    c = System.in.read() - 48;
-	    if(c==-35) System.in.read();
 	    if (c < 0 || c > 9) return n;
 	    n = n * 10 + c;
 	}
