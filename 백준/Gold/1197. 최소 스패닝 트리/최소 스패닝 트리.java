@@ -1,30 +1,22 @@
-import java.io.*;
 import java.util.PriorityQueue;
 class Main {
-	static PriorityQueue<Edge2> q;
+	static PriorityQueue<Edge> q = new PriorityQueue<>();
 	static int[] parent, rank;
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		String[] VE = br.readLine().split(" ");
-		int V = Integer.parseInt(VE[0]);
-		int E = Integer.parseInt(VE[1]);
-		
+	public static void main(String[] args) throws Exception {
+		int V = read();
+		int E = read();
 		parent = new int[V+1];
 		rank = new int[V+1];
 		for(int i=1; i<=V; i++) parent[i] = i;
-		
-		q = new PriorityQueue<>();
 		int s, e, w;
 		for(int i=0; i<E; i++) {
-			String[] SEW = br.readLine().split(" ");
-			s = Integer.parseInt(SEW[0]);
-			e = Integer.parseInt(SEW[1]);
-			w = Integer.parseInt(SEW[2]);
-			q.add(new Edge2(s, e, w));
+			s = read();
+			e = read();
+			w = read();
+			q.add(new Edge(s, e, w));
 		}
-		
-		long result = 0;
-		Edge2 now;
+		int result = 0;
+		Edge now;
 		while(E-->0) {
 			 now = q.poll();
 			 int findS = find(now.s);
@@ -35,7 +27,6 @@ class Main {
 			 }
 		}
 		System.out.print(result);
-		
 	}
 	static void union(int a, int b) {
 		if(rank[a]==rank[b]) {
@@ -51,21 +42,31 @@ class Main {
 		if(parent[i]!=i) return parent[i] = find(parent[i]);
 		return i;
 	}
+	static int read() throws Exception {
+		int c, n = 0;
+		boolean negative = false;
+		while(true) {
+			c = System.in.read() -48;
+			if(c==-3) {
+				negative = true;
+				c = System.in.read() -48;
+			}
+			if(c<0||c>9) return negative ? -n : n;
+			n = n*10 +c;
+		}
+	}
 }
-
-class Edge2 implements Comparable<Edge2> {
+class Edge implements Comparable<Edge> {
 	int s;
 	int e;
 	int w;
-	
-	Edge2(int s, int e, int w) {
+	Edge(int s, int e, int w) {
 		this.s = s;
 		this.e = e;
 		this.w = w;
 	}
-	
 	@Override
-	public int compareTo(Edge2 o) {
+	public int compareTo(Edge o) {
 		return this.w-o.w;
 	}
 }
