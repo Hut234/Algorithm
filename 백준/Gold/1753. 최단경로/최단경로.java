@@ -22,8 +22,11 @@ class Main {
 		dist[K] = 0;
 		Edge cur;
 		int tmp;
+        boolean[] visited = new boolean[V+1];
 		while(!pq.isEmpty()) {
 			cur = pq.poll();
+			if(visited[cur.e]) continue;
+			visited[cur.e] = true;
 			for(Edge edge : al[cur.e]) {
 				tmp = dist[cur.e] + edge.w;
 				if(tmp<dist[edge.e]) {
