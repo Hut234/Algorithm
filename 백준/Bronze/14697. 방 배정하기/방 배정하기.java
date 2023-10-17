@@ -20,11 +20,11 @@ class Main{
             return;
         }
         int tmpA, tmpB, tmpC;
-        for(int i=0; i*A<300; i++) {
+        for(int i=0; i<=300; i++) {
             tmpA = i*A;
-            for(int j=0; j*B+tmpA<300; j++) {
+            for(int j=0; j+i<=300; j++) {
                 tmpB = j*B;
-                for(int k=0; k*C+tmpA+tmpB<300; k++) {
+                for(int k=0; k+j+i<=300; k++) {
                     tmpC = k*C;
                     if(tmpA+tmpB+tmpC==N) {
                         System.out.println(1);
