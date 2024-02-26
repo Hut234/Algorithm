@@ -1,105 +1,72 @@
-import java.io.*;
-import java.util.*;
-class Main {
-	static int N, COST = Integer.MAX_VALUE;
-	static boolean CHK_FIRST = true;
-	static int[] RESULT = new int[5];
-	static int[] MIN = new int[4];
-	static int[][] INFO;
-	static List<Integer> LIST = new ArrayList<>();
-	static List<Integer> MIN_LIST;
-	static StringBuilder SB = new StringBuilder();
-	
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		N = Integer.parseInt(br.readLine());
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		for(int i=0; i<4; i++) MIN[i] = Integer.parseInt(st.nextToken());
-		INFO = new int[N][5];
-		for(int i=0; i<N; i++) {
-			st = new StringTokenizer(br.readLine());
-			for(int j=0; j<5; j++) {
-				INFO[i][j] = Integer.parseInt(st.nextToken());
-			}
-		}
-		recur(0);
-		System.out.println(COST);
-        if(SB.length()!=0)
-			System.out.println(SB.toString());
- 	}
-	
-	private static void recur(int idx) {
-		if(COST==-1) return;
-		if(idx == N) {
-			if(RESULT[0] >= MIN[0] && RESULT[1] >= MIN[1] && RESULT[2] >= MIN[2] && RESULT[3] >= MIN[3]) {
-				if(CHK_FIRST) CHK_FIRST = false;
-				if(COST>RESULT[4]) {
-					COST = RESULT[4];
-					MIN_LIST = new ArrayList<>();
-					SB.setLength(0);
-					Iterator<Integer> iter = LIST.iterator();
-					int val;
-					while(iter.hasNext()) {
-						val = iter.next()+1;
-						MIN_LIST.add(val);
-						SB.append(val).append(" ");
-					}
-				} else if(COST==RESULT[4]) {
-					boolean change = false;
-					if(LIST.size() == MIN_LIST.size()) {
-						for(int i=0; i<LIST.size(); i++) {
-							if(MIN_LIST.get(i) > (LIST.get(i)+1)) {
-								change = true;
-								return;
-							} else if(MIN_LIST.get(i) == (LIST.get(i)+1)) {
-								continue;
-							} else {
-								return;
-							}
-						}
-					} else {
-						int size = LIST.size() < MIN_LIST.size() ? LIST.size() : MIN_LIST.size();
-						for(int i=0; i<size; i++) {
-							if(i==size-1 && size == LIST.size()) change = true;
-							if(MIN_LIST.get(i) > (LIST.get(i)+1)) {
-								change = true;
-								return;
-							} else if(MIN_LIST.get(i) == (LIST.get(i)+1)) {
-								continue;
-							} else {
-								return;
-							}
-						}
-					}
-					if(change) {
-						SB.setLength(0);
-						MIN_LIST.clear();
-						Iterator<Integer> iter = LIST.iterator();
-						int val;
-						while(iter.hasNext()) {
-							val = iter.next()+1;
-							SB.append(val).append(" ");
-							MIN_LIST.add(val);
-						}
-					}
-				}
-			} else {
-				if(CHK_FIRST) {
-					COST = -1;
-					CHK_FIRST = false;
-				}
-			}
-			return;
-		}
-		LIST.add(idx);
-		for(int i=0; i<5; i++) {
-			RESULT[i] += INFO[idx][i];
-		}
-		recur(idx+1);
-		LIST.remove(LIST.size()-1);
-		for(int i=0; i<5; i++) {
-			RESULT[i] -= INFO[idx][i];
-		}
-		recur(idx+1);
-	}
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
+
+public class Main {
+
+  static int N, result = Integer.MAX_VALUE;
+  static int[] protein, fat, calorie, vitamin, price;
+  static boolean[] visited;
+  static StringBuilder sResult;
+  public static void main(String[] args) throws IOException {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    N = Integer.parseInt(br.readLine());
+
+    visited = new boolean[N+1];
+    protein = new int[N+1];
+    fat = new int[N+1];
+    calorie = new int[N+1];
+    vitamin = new int[N+1];
+    price = new int[N+1];
+
+    StringTokenizer st = new StringTokenizer(br.readLine());
+    protein[0] = Integer.parseInt(st.nextToken());
+    fat[0] = Integer.parseInt(st.nextToken());
+    calorie[0] = Integer.parseInt(st.nextToken());
+    vitamin[0] = Integer.parseInt(st.nextToken());
+
+    for (int i = 1; i <= N; i++) {
+      st = new StringTokenizer(br.readLine());
+      protein[i] = Integer.parseInt(st.nextToken());
+      fat[i] = Integer.parseInt(st.nextToken());
+      calorie[i] = Integer.parseInt(st.nextToken());
+      vitamin[i] = Integer.parseInt(st.nextToken());
+      price[i] = Integer.parseInt(st.nextToken());
+    }
+
+    recur(1, 0, 0, 0, 0, 0);
+    if (result == Integer.MAX_VALUE) {
+      System.out.print(-1);
+    } else {
+      System.out.println(result);
+      System.out.print(sResult);
+    }
+  }
+
+  private static void recur(int idx, int p, int f, int c, int v, int pc) {
+
+    if (pc > result) return;
+
+    if (protein[0] <= p && fat[0] <= f && calorie[0] <= c && vitamin[0] <= v) {
+      if (result > pc) {
+        result = pc;
+        sResult = new StringBuilder();
+        for (int i = 1; i < N+1; i++) {
+          if(visited[i]) {
+            sResult.append(i).append(" ");
+          }
+        }
+      }
+    }
+
+    if (idx == N+1) return;
+
+    visited[idx] = true;
+    recur(idx+1, p+protein[idx], f+fat[idx], c+calorie[idx], v+vitamin[idx], pc+price[idx]);
+    visited[idx] = false;
+    recur(idx+1, p, f, c, v, pc);
+  }
 }
