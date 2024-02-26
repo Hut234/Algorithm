@@ -1,29 +1,38 @@
 import java.io.*;
 import java.util.*;
-class Main {
-	static int N;
-	static int[] SOUR, BITTER;
-	static List<Integer> list = new ArrayList<>();
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		N = Integer.parseInt(br.readLine());
-		SOUR = new int[N];
-		BITTER = new int[N];
-		for(int i=0; i<N; i++) {
-			String[] input = br.readLine().split(" ");
-			SOUR[i] = Integer.parseInt(input[0]);
-			BITTER[i] = Integer.parseInt(input[1]);
-		}
-		recur(0, 1, 0);
-		Collections.sort(list);
-		System.out.println(list.get(0)==1? list.get(1) : list.get(0));
-	}
-	private static void recur(int idx, int sour, int bitter) {
-		if(idx == N) {
-			list.add(Math.abs(sour-bitter));
-			return;
-		}
-		recur(idx+1, sour*SOUR[idx], bitter+BITTER[idx]);
-		recur(idx+1, sour, bitter);
-	}
+
+public class Main {
+
+  static int N, result = Integer.MAX_VALUE;
+  static int[] sour, bitter;
+  public static void main(String[] args) throws IOException {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    N = Integer.parseInt(br.readLine());
+
+    sour = new int[N];
+    bitter = new int[N];
+
+    StringTokenizer st;
+    for (int i = 0; i < N; i++) {
+      st = new StringTokenizer(br.readLine());
+      sour[i] = Integer.parseInt(st.nextToken());
+      bitter[i] = Integer.parseInt(st.nextToken());
+    }
+
+    recur(0, 1, 0);
+    System.out.println(result);
+  }
+
+  private static void recur(int idx, int s, int b) {
+    if (idx == N) {
+      int abs = Math.abs(s - b);
+      if (s != 1) {
+        result = Integer.min(result, Math.abs(s - b));
+      }
+      return;
+    }
+
+    recur(idx+1, s*sour[idx], b+bitter[idx]);
+    recur(idx+1, s, b);
+  }
 }
