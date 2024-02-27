@@ -1,17 +1,30 @@
 import java.io.*;
-class Main {
+import java.util.*;
+
+public class Main {
+
 	public static void main(String[] args) throws IOException {
+		
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		String[] input = br.readLine().split(" ");
-		int N = Integer.parseInt(input[0]);
-		int K = Integer.parseInt(input[1]);
-		int[] prev = new int[N+1];
-		String[] str = br.readLine().split(" ");
-		for(int i=1; i<=N; i++) {
-			prev[i] = prev[i-1] + Integer.parseInt(str[i-1]);
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		int N = Integer.parseInt(st.nextToken());
+		int K = Integer.parseInt(st.nextToken());
+		
+		int[] arr = new int[N+1];
+		int idx = 1;
+		
+		st = new StringTokenizer(br.readLine());
+		while (st.hasMoreTokens()) {
+			arr[idx] = arr[idx-1] + Integer.parseInt(st.nextToken());
+			idx++;
 		}
-		int max = Integer.MIN_VALUE;
-		for(int i=0, j=K; j!=N+1; i++,j++) max = Integer.max(max, prev[j]-prev[i]);
-		System.out.println(max);
+		
+		int max = -10000001;
+		for (int i = K; i <= N; i++) {
+			max = Integer.max(max, (arr[i]-arr[i-K]));
+		}
+		
+		System.out.print(max);
 	}
+
 }
