@@ -1,17 +1,22 @@
 import java.io.*;
-class Main {
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		int N = Integer.parseInt(br.readLine());
-		int[] prev = new int[N+1];
-		String[] input = br.readLine().split(" ");
-		int tmp, max = Integer.MIN_VALUE;
-		for(int i=1; i<=N; i++) {
-			tmp = Integer.parseInt(input[i-1]);
-			prev[i] = prev[i-1] + Integer.parseInt(input[i-1]);
-			if(prev[i]<tmp) prev[i] = tmp;
-			max = Integer.max(max, prev[i]);
-		}
-		System.out.println(max);
-	}
+import java.util.StringTokenizer;
+
+public class Main {
+  public static void main(String[] args) throws IOException {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    int N = Integer.parseInt(br.readLine());
+    StringTokenizer st = new StringTokenizer(br.readLine());
+
+    int[] prefix = new int[N+1];
+
+
+    int tmp, max = -100000001, idx = 1;
+    while (st.hasMoreTokens()) {
+      tmp = Integer.parseInt(st.nextToken());
+      prefix[idx] = Integer.max(tmp, prefix[idx-1] + tmp);
+      max = Integer.max(max, prefix[idx]);
+      idx++;
+    }
+    System.out.print(max);
+  }
 }
