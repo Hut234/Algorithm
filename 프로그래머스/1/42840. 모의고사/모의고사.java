@@ -15,6 +15,8 @@ class Solution {
         if (max == a) result.add(1);
         if (max == b) result.add(2);
         if (max == c) result.add(3);
+        
+        // 스트림 사용 시 시간 소요 증가
         return result.stream().mapToInt(Integer::intValue).toArray();
 		
     }
