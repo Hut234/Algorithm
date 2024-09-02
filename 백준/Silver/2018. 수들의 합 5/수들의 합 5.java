@@ -1,24 +1,14 @@
 import java.io.*;
 
-public class Main {
-
+class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(br.readLine());
 
-        int cnt = 1;
-        int s = 1, e = 1;
-        int sum = 0;
-        while (e < N) {
-            sum = (e-s+1) *(s+e) /2;
-            if (sum == N) {
-                cnt++;
-                e++;
-            } else if (sum < N) {
-                e++;
-            } else if (sum > N) {
-                s++;
-            }
+        int cnt = 0;
+
+        for (int i = 1, j; (j = i *(i+1) /2) <= N; i++) {
+            if ((N -(i*(i-1) /2)) %i == 0) cnt++;
         }
 
         System.out.print(cnt);
