@@ -26,7 +26,6 @@ class Solution {
             visited[i] = true;
             recur(idx+1, fatigue -dungeons[i][1], cnt+1);
             visited[i] = false;
-            recur(idx+1, fatigue, cnt);
-        }
+        }  
     }
 }
