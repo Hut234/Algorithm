@@ -1,30 +1,42 @@
 import java.io.*;
-import java.util.*;
+import java.util.Stack;
+
 class Main {
-	static int N, M;
-	static Stack<Integer> STACK = new Stack<>();
-	static StringBuilder SB = new StringBuilder();
-	public static void main(String[] args) throws IOException {
-		String[] input = (new BufferedReader(new InputStreamReader(System.in))).readLine().split(" ");
-		N = Integer.parseInt(input[0]);
-		M = Integer.parseInt(input[1]);
-		recur(0);
-	}
-	private static void recur(int idx) {
-		if(idx==M) {
-			Iterator<Integer> iter = STACK.iterator();
-			while(iter.hasNext()) {
-				SB.append(iter.next()).append(" ");
-			}
-			System.out.println(SB.toString());
-			SB.setLength(0);
-			return;
-		}
-		for(int i=1; i<=N; i++) {
-			if(STACK.contains(i)) continue;
-			STACK.add(i);
-			recur(idx+1);
-			STACK.pop();
-		}
-	}
+  static int N;
+  static int M;
+  static boolean[] visited;
+  static Stack<Integer> stack = new Stack<>();
+  static StringBuilder result = new StringBuilder();
+
+  public static void main(String[] args) throws IOException {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    String[] s = br.readLine().split(" ");
+    N = Integer.parseInt(s[0]);
+    M = Integer.parseInt(s[1]);
+    visited = new boolean[N+1];
+    recur(0);
+    System.out.println(result);
+  }
+
+  private static void recur(int size) {
+    // base case
+    if (size == M) {
+      for (Integer i : stack) {
+        result.append(i).append(" ");
+      }
+      result.deleteCharAt(result.length()-1).append("\n");
+      return;
+    }
+
+    for (int i = 1; i <= N; i++) {
+      if (!visited[i]) {
+        visited[i] = true;
+        stack.push(i);
+        recur(size+1);
+
+        visited[i] = false;
+        stack.pop();
+      }
+    }
+  }
 }
