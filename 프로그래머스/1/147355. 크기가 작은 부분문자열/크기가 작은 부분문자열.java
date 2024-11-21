@@ -5,9 +5,9 @@ class Solution {
         int standardLen = p.length();
         int strLen = t.length();
         
-        for(int i=0; i<strLen&&i+standardLen<=strLen; i++) {
+        for(int i=0; i+standardLen<=strLen; i++) {
             long val = Long.parseLong(t.substring(i, i+standardLen));
-            if (val == standard || val < standard) answer++;
+            if (val <= standard) answer++;
         }
         
         return answer;
