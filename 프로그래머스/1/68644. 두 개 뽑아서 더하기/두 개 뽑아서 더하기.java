@@ -10,9 +10,9 @@ class Solution {
         
         int[] result = set.stream()
             .mapToInt(Integer::intValue)
+            .sorted()
             .toArray();
-        
-        Arrays.sort(result);   
+
         return result;
     }
 }
