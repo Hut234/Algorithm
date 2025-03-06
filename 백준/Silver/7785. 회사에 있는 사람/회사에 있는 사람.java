@@ -1,7 +1,4 @@
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
 
 public class Main {
@@ -9,7 +6,7 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         int N = Integer.parseInt(br.readLine());
-        Set<String> logs = new HashSet<>();
+        Set<String> logs = new TreeSet<>(Collections.reverseOrder());
         while (N-- > 0) {
             String[] log = br.readLine().split(" ");
             String key = log[0];
@@ -17,14 +14,11 @@ public class Main {
             else logs.add(key);
         }
 
-        List<String> names = new ArrayList<>(logs);
-        names.sort(Collections.reverseOrder());
-
-        StringBuilder answer = new StringBuilder();
+        String[] names = logs.toArray(new String[0]);
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         for (String name : names) {
-            answer.append(name).append("\n");
+            bw.write(name + "\n");
         }
-
-        System.out.print(answer);
+        bw.flush();
     }
 }
