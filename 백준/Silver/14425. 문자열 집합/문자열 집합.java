@@ -1,4 +1,4 @@
-    import java.io.BufferedReader;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
@@ -34,9 +34,9 @@ public class Main {
                 int mid = (start + end) / 2;
                 int result = words[mid].compareTo(findWord);
                 if (result > 0) {
-                    end--;
+                    end = mid - 1;
                 } else if (result < 0) {
-                    start++;
+                    start = mid + 1;
                 } else {
                     answer += counts.get(findWord);
                     break;
