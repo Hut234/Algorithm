@@ -18,21 +18,18 @@ public class Main {
         }
 
         int answer = 0;
-        for (int i = 1; i <= N; i++) {
-            int start = i, end = N;
-            while (start <= end) {
-                int mid = (start + end) / 2;
-                int sum = accumulate[mid] - accumulate[i - 1];
-                if (sum > M) end = mid - 1;
-                else if (sum < M) start = mid + 1;
-                else {
-                    answer++;
-                    break;
-                }
+        int start = 0, end = 1;
+        while (start <= end) {
+            if (end > N) break;
+            int sum = accumulate[end] - accumulate[start];
+            if (sum < M) end++;
+            else if (sum > M) start++;
+            else {
+                answer++;
+                start++;
+                end++;
             }
-
         }
-
 
         System.out.print(answer);
     }
