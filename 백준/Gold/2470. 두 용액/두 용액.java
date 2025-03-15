@@ -17,27 +17,19 @@ public class Main {
 
         Arrays.sort(solutions);
 
-
         int minValue = Integer.MAX_VALUE;
         int first = 0, second = 0;
         int start = 0, end = N - 1;
         while (start < end) {
             int sum = solutions[start] + solutions[end];
-            if (sum > 0) {
-                if (minValue > Math.abs(sum)) {
-                    first = start;
-                    second = end;
-                    minValue = Math.abs(sum);
-                }
-                end--;
-            } else if (sum < 0) {
-                if (Math.abs(minValue) > Math.abs(sum)) {
-                    first = start;
-                    second = end;
-                    minValue = Math.abs(sum);
-                }
-                start++;
-            } else {
+            if (Math.abs(minValue) > Math.abs(sum)) {
+                first = start;
+                second = end;
+                minValue = Math.abs(sum);
+            }
+            if (sum > 0) end--;
+            else if (sum < 0) start++;
+            else {
                 first = start;
                 second = end;
                 break;
