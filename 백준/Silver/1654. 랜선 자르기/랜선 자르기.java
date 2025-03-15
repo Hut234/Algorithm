@@ -1,33 +1,44 @@
-import java.io.*;
-class Main {
-    private static int K;
-    private static int[] arr;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+
+public class Main {
     public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader((System.in)));
-        String[] s1 = br.readLine().split(" ");
-        K = Integer.parseInt(s1[0]);
-        int N = Integer.parseInt(s1[1]);
-        long sum = 0;
-        arr = new int[K];
-        for (int i = 0; i < K; i++) {
-            arr[i] = Integer.parseInt(br.readLine());
-            sum += arr[i];
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        String[] NK = br.readLine().split(" ");
+        int N = Integer.parseInt(NK[0]);
+        int K = Integer.parseInt(NK[1]);
+
+        int[] lines = new int[N];
+        int max = -1;
+        for (int i = 0; i < N; i++) {
+            lines[i] = Integer.parseInt(br.readLine());
+            max = Integer.max(max, lines[i]);
         }
-        long s = 0, e = sum/N, mid = e;
-        while (s <= e) {
-            if (count(mid) >= N) {
-                s = mid+1;
+
+        Arrays.sort(lines);
+
+        long start = 1, end = max;
+        long answer = -1;
+        while (start <= end) {
+            long mid = (start + end) / 2;
+            if (isEnough(lines, mid, K)) {
+                start = mid + 1;
+                answer = Long.max(answer, mid);
             }
-            else e = mid-1;
-            mid = (s+e) /2;
+            else end = mid - 1;
         }
-        System.out.print(mid);
+
+        System.out.print(answer);
     }
-    private static long count(long mid) {
-        long cnt = 0;
-        for (int i = 0; i < K; i++) {
-            cnt += arr[i] /mid;
+
+    private static boolean isEnough(int[] lines, long cuttingLength, int k) {
+        long sum = 0;
+        for (int line : lines) {
+            sum += line / cuttingLength;
         }
-        return cnt;
+        return sum >= k;
     }
 }
