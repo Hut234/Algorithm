@@ -5,39 +5,44 @@ import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
-	public static void main(String[] args) throws IOException {
-	    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-		int N = Integer.parseInt(br.readLine());
-		int[] solutions = new int[N];
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		for (int i = 0; i < N; i++) {
-			solutions[i] = Integer.parseInt(st.nextToken());
-		}
-		Arrays.sort(solutions);
+        int N = Integer.parseInt(br.readLine());
+        int[] solutions = new int[N];
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < N; i++) {
+            solutions[i] = Integer.parseInt(st.nextToken());
+        }
 
-		int min = Integer.MAX_VALUE;
-		int first = 0, second = 0;
-		for (int i = 0; i < N - 1; i++) {
-			int start = i + 1, end = N - 1;
-			while (start <= end) {
-				int mid = (start + end) / 2;
-				int sum = solutions[i] + solutions[mid];
-				if (sum > 0) end = mid - 1;
-				else if (sum < 0) start = mid + 1;
-				else {
-					System.out.print(solutions[i] + " " + solutions[mid]);
-					return;
-				}
+        Arrays.sort(solutions);
 
-				if (Math.abs(min) > Math.abs(sum)) {
-					min = sum;
-					first = solutions[i];
-					second = solutions[mid];
-				}
-			}
-		}
 
-	    System.out.print(first + " " + second);
-	}
+        int minValue = Integer.MAX_VALUE;
+        int first = 0, second = 0;
+        int start = 0, end = N - 1;
+        while (start < end) {
+            int sum = solutions[start] + solutions[end];
+            if (sum > 0) {
+                if (minValue > Math.abs(sum)) {
+                    first = start;
+                    second = end;
+                    minValue = Math.abs(sum);
+                }
+                end--;
+            } else if (sum < 0) {
+                if (Math.abs(minValue) > Math.abs(sum)) {
+                    first = start;
+                    second = end;
+                    minValue = Math.abs(sum);
+                }
+                start++;
+            } else {
+                first = start;
+                second = end;
+                break;
+            }
+        }
+        System.out.print(solutions[first] + " " + solutions[second]);
+    }
 }
