@@ -1,9 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
 
@@ -33,7 +31,7 @@ public class Main {
             graph[end].add(start);
         }
 
-        dfs(1);
+        bfs(1);
         StringBuilder sb = new StringBuilder();
         for (int i = 2; i <= N; i++) {
             sb.append(result[i]).append("\n");
@@ -42,13 +40,20 @@ public class Main {
         System.out.print(sb);
     }
 
-    static void dfs(int parent) {
-        visited[parent] = true;
+    static void bfs(int node) {
+        Queue<Integer> queue = new LinkedList<>();
+        queue.offer(node);
+        visited[node] = true;
 
-        for (Integer next : graph[parent]) {
-            if (!visited[next]) {
-                result[next] = parent;
-                dfs(next);
+        while (!queue.isEmpty()) {
+            Integer parent = queue.poll();
+
+            for (Integer next : graph[parent]) {
+                if (!visited[next]) {
+                    result[next] = parent;
+                    queue.offer(next);
+                    visited[next] = true;
+                }
             }
         }
     }
