@@ -1,38 +1,39 @@
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 public class Main {
 
-  static int N, result = Integer.MAX_VALUE;
-  static int[] sour, bitter;
-  public static void main(String[] args) throws IOException {
-    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    N = Integer.parseInt(br.readLine());
+    static int n;
+    static int result = Integer.MAX_VALUE;
+    static int[][] tastes;
 
-    sour = new int[N];
-    bitter = new int[N];
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-    StringTokenizer st;
-    for (int i = 0; i < N; i++) {
-      st = new StringTokenizer(br.readLine());
-      sour[i] = Integer.parseInt(st.nextToken());
-      bitter[i] = Integer.parseInt(st.nextToken());
+        n = Integer.parseInt(br.readLine());
+        tastes = new int[n][2];
+
+        StringTokenizer st;
+        for (int i = 0; i < n; i++) {
+            st = new StringTokenizer(br.readLine());
+            tastes[i][0] = Integer.parseInt(st.nextToken());
+            tastes[i][1] = Integer.parseInt(st.nextToken());
+        }
+
+        dfs(0, 1, 0);
+        System.out.print(result);
     }
 
-    recur(0, 1, 0);
-    System.out.println(result);
-  }
+    static void dfs(int depth, int sour, int bitter) {
+        if (depth == n) {
+            if (sour == 1 && bitter == 0) return;
+            result = Integer.min(result, Math.abs(sour - bitter));
+            return;
+        }
 
-  private static void recur(int idx, int s, int b) {
-    if (idx == N) {
-      int abs = Math.abs(s - b);
-      if (s != 1) {
-        result = Integer.min(result, Math.abs(s - b));
-      }
-      return;
+        dfs(depth + 1, sour * tastes[depth][0], bitter + tastes[depth][1]);
+        dfs(depth + 1, sour, bitter);
     }
-
-    recur(idx+1, s*sour[idx], b+bitter[idx]);
-    recur(idx+1, s, b);
-  }
 }
