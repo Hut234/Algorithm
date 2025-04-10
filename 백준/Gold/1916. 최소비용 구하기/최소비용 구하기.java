@@ -1,62 +1,70 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
-class Main {
-	public static void main(String[] args) throws Exception {
-		int N = read();
-		int M = read();
-		List<Edge>[] al = new ArrayList[N+1];
-		int dist[] = new int[N+1];
-		for(int i=1; i<=N; i++) {
-			al[i] = new ArrayList<>();
-			dist[i] = Integer.MAX_VALUE;
-		}
-		int s, e, w;
-		for(int i=0; i<M; i++) {
-			s = read();
-			e = read();
-			w = read();
-			al[s].add(new Edge(e, w));
-		}
-		int start = read();
-		int end = read();
-		Queue<Edge> pq = new PriorityQueue<>();
-		pq.offer(new Edge(start, 0));
-		dist[start] = 0;
-		boolean[] visited = new boolean[N+1];
-		Edge cur;
-		int tmp;
-		while(!pq.isEmpty()) {
-			cur = pq.poll();
-			if(visited[cur.nxt]) continue;
-			visited[cur.nxt] = true;
-			for(Edge edge : al[cur.nxt]) {
-				tmp = dist[cur.nxt] + edge.w;
-				if(tmp<dist[edge.nxt]) {
-					dist[edge.nxt] = tmp;
-					pq.offer(new Edge(edge.nxt, tmp));
-				}
-			}
-		}
-		System.out.print(dist[end]);
-	}
-	static int read() throws Exception {
-		int c, n = 0;
-		while(true) {
-			c = System.in.read() -48;
-			if(c==-35) System.in.read();
-			if(c<0||c>9) return n;
-			n = n*10 +c;
-		}
-	}
-}
-class Edge implements Comparable<Edge> {
-	int nxt;
-	int w;
-	public Edge(int next, int weight) {
-		this.nxt = next;
-		this.w = weight;
-	}
-	@Override
-	public int compareTo(Edge o) {
-		return this.w-o.w;
-	}
+
+public class Main {
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        int N = Integer.parseInt(br.readLine());
+        int M = Integer.parseInt(br.readLine());
+
+
+        List<Bus>[] graph = new List[N + 1];
+        for (int i = 1; i <= N; i++) graph[i] = new ArrayList<>();
+
+        StringTokenizer st;
+        for (int i = 0; i < M; i++) {
+            st = new StringTokenizer(br.readLine());
+            int start = Integer.parseInt(st.nextToken());
+            int end = Integer.parseInt(st.nextToken());
+            int time = Integer.parseInt(st.nextToken());
+            graph[start].add(new Bus(end, time));
+        }
+
+
+        st = new StringTokenizer(br.readLine());
+        int from = Integer.parseInt(st.nextToken());
+        int end = Integer.parseInt(st.nextToken());
+        Queue<Bus> queue = new PriorityQueue<>();
+        queue.offer(new Bus(from, 0));
+
+        int[] dijkstra = new int[N + 1];
+        Arrays.fill(dijkstra, Integer.MAX_VALUE);
+
+        boolean[] visited = new boolean[N + 1];
+        while (!queue.isEmpty()) {
+            Bus cur = queue.poll();
+            if (cur.number == end) break;
+            visited[cur.number] = true;
+
+            for (Bus next : graph[cur.number]) {
+                if (visited[next.number]) continue;
+                if (cur.time + next.time < dijkstra[next.number]) {
+                    next.time += cur.time;
+                    queue.offer(next);
+                    dijkstra[next.number] = next.time;
+                }
+            }
+
+        }
+
+        System.out.print(dijkstra[end]);
+    }
+
+    static class Bus implements Comparable<Bus> {
+        int number;
+        int time;
+        Bus(int number, int time) {
+            this.number = number;
+            this.time = time;
+        }
+
+        @Override
+        public int compareTo(Bus o) {
+            return this.time - o.time;
+        }
+    }
 }
