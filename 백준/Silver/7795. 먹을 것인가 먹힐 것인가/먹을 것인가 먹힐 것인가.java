@@ -32,7 +32,7 @@ public class Main {
             Arrays.sort(B);
             int result = 0;
             for (int i = 0; i < countA; i++) {
-                int X = A[i];
+                int X = A[i], count = 0;
                 int start = 0, end = countB - 1;
 
                 while (start <= end) {
@@ -41,14 +41,10 @@ public class Main {
                     if (X <= cur) {
                         end = mid - 1;
                     } else {
-                        if (mid == countB - 1 || B[mid + 1] >= X) {
-                            result += mid + 1;
-                            break;
-                        } else {
-                            start = mid + 1;
-                        }
+                        start = mid + 1;
                     }
                 }
+                result += start;
             }
             sb.append(result).append("\n");
         }
