@@ -11,28 +11,25 @@ public class Main {
 		int N = Integer.parseInt(NS[0]);
 		int S = Integer.parseInt(NS[1]);
 
-
-		int[] numbers = new int[N];
-		long[] accumulate = new long[N + 1];
+		int[] sequence = new int[N];
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		for (int i = 0; i < N; i++) {
-			numbers[i] = Integer.parseInt(st.nextToken());
-			accumulate[i + 1] = accumulate[i] + numbers[i];
+			sequence[i] = Integer.parseInt(st.nextToken());
 		}
 
-		int answer = Integer.MAX_VALUE;
-		for (int i = 1; i <= N; i++) {
-			int start = i, end = N;
-			while (end <= N && start <= end) {
-				int mid = (start + end) / 2;
-				long sum = accumulate[mid] - accumulate[i - 1];
-				if (sum >= S) {
-					end = mid - 1;
-					answer = Integer.min(answer, mid - i + 1);
-				} else start = mid + 1;
+		int result = 100001;
+		int start = 0, end = 0, sum = sequence[start];
+		while (start > -1 && end < N && start <= end) {
+			if (sum >= S) {
+				result = Integer.min(result, end - start + 1);
+				sum -= sequence[start++];
+			} else {
+				end++;
+				if (end == N) break;
+				sum += sequence[end];
 			}
 		}
 
-		System.out.print(answer == Integer.MAX_VALUE ? 0 : answer);
+		System.out.print(result == 100001 ? 0 : result);
 	}
 }
