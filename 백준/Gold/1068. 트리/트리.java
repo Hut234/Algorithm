@@ -32,14 +32,14 @@ class Main {
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		remove = Integer.parseInt(br.readLine());
 		for (int i = 0; i < n; i++) {
-			int next = Integer.parseInt(st.nextToken());
-			if (next == -1) {
+			int parent = Integer.parseInt(st.nextToken());
+			if (parent == -1) {
 				root = i;
 				continue;
 			}
-			if (next == remove || i == remove) continue;
-			graph[i].add(next);
-			graph[next].add(i);
+			if (i == remove || parent == remove) continue;
+
+			graph[parent].add(i);
 		}
 	}
 
@@ -55,22 +55,9 @@ class Main {
 		for (int child : graph[parent]) {
 			if (visited[child]) continue;
 			dfs(child);
-			visited[child] = false;
 		}
 
-		if (isLeaf(parent)) result++;
-	}
-
-	static boolean isLeaf(int node) {
-		boolean flag = true;
-		for (int next : graph[node]) {
-			if (!visited[next]) {
-				flag = false;
-				break;
-			}
-		}
-
-		return flag;
+		if (graph[parent].isEmpty()) result++;
 	}
 
 	static void print() {
