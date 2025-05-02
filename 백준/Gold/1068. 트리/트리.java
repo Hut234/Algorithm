@@ -8,8 +8,7 @@ import java.util.StringTokenizer;
 class Main {
 
 	static int n;
-	static boolean[] visited;
-	static int result;
+	static int[] dp;
 	static int root;
 	static int remove;
 	static List<Integer>[] graph;
@@ -22,7 +21,7 @@ class Main {
 	static void getInput() throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		n = Integer.parseInt(br.readLine());
-		visited = new boolean[n];
+		dp = new int[n];
 		graph = new List[n];
 
 		for (int i = 0; i < n; i++) {
@@ -44,23 +43,22 @@ class Main {
 	}
 
 	static void solve() {
-		dfs(root);
+		if (root != remove) dfs(root);
 		print();
 	}
 
-	static void dfs(int parent) {
-		if (parent == remove) return;
-		visited[parent] = true;
-
-		for (int child : graph[parent]) {
-			if (visited[child]) continue;
-			dfs(child);
+	static int dfs(int parent) {
+		if (graph[parent].isEmpty()) {
+			return dp[parent] = 1;
 		}
 
-		if (graph[parent].isEmpty()) result++;
+		for (int child : graph[parent]) {
+			dp[parent] += dfs(child);
+		}
+		return dp[parent];
 	}
 
 	static void print() {
-		System.out.print(result);
+		System.out.print(dp[root]);
 	}
 }
