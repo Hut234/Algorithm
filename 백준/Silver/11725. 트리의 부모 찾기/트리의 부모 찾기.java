@@ -1,60 +1,64 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 
-public class Main {
+class Main {
 
-    static boolean[] visited;
-    static List<Integer>[] graph;
-    static int[] result;
+	static StringBuilder sb = new StringBuilder();
+	static int n;
+	static boolean[] visited;
+	static int[] result;
+	static List<Integer>[] graph;
 
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	public static void main(String[] args) throws IOException {
+		getInput();
+		solve();
+	}
 
-        int N = Integer.parseInt(br.readLine());
-        visited = new boolean[N + 1];
-        graph = new List[N + 1];
-        result = new int[N + 1];
+	static void getInput() throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		n = Integer.parseInt(br.readLine());
+		visited = new boolean[n + 1];
+		result = new int[n + 1];
+		graph = new List[n + 1];
 
-        for (int i = 1; i <= N; i++) {
-            graph[i] = new ArrayList<>();
-        }
+		for (int i = 1; i <= n; i++) {
+			graph[i] = new ArrayList<>();
+		}
 
-        StringTokenizer st;
-        for (int i = 1; i < N; i++) {
-            st = new StringTokenizer(br.readLine());
-            int start = Integer.parseInt(st.nextToken());
-            int end = Integer.parseInt(st.nextToken());
 
-            graph[start].add(end);
-            graph[end].add(start);
-        }
+		StringTokenizer st;
+		for (int i = 1; i < n; i++) {
+			st = new StringTokenizer(br.readLine());
+			int parent = Integer.parseInt(st.nextToken());
+			int child = Integer.parseInt(st.nextToken());
+			graph[parent].add(child);
+			graph[child].add(parent);
+		}
+	}
 
-        bfs(1);
-        StringBuilder sb = new StringBuilder();
-        for (int i = 2; i <= N; i++) {
-            sb.append(result[i]).append("\n");
-        }
+	static void solve() {
+		dfs(1);
+		print();
+	}
 
-        System.out.print(sb);
-    }
+	static void dfs(int parent) {
+		visited[parent] = true;
 
-    static void bfs(int node) {
-        Queue<Integer> queue = new LinkedList<>();
-        queue.offer(node);
-        visited[node] = true;
+		for (int child : graph[parent]) {
+			if (visited[child]) continue;
+			result[child] = parent;
+			dfs(child);
+		}
+	}
 
-        while (!queue.isEmpty()) {
-            Integer parent = queue.poll();
-
-            for (Integer next : graph[parent]) {
-                if (!visited[next]) {
-                    result[next] = parent;
-                    queue.offer(next);
-                    visited[next] = true;
-                }
-            }
-        }
-    }
+	static void print() {
+		for (int i = 2; i <= n; i++) {
+			sb.append(result[i]).append("\n");
+		}
+		System.out.print(sb);
+	}
 }
