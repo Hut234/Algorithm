@@ -43,11 +43,12 @@ class Main {
 	}
 
 	static void solve() {
-		if (root != remove) dfs(root);
-		print();
+		print(dfs(root));
 	}
 
 	static int dfs(int parent) {
+		if (parent == remove) return 0;
+
 		if (graph[parent].isEmpty()) {
 			return dp[parent] = 1;
 		}
@@ -58,7 +59,7 @@ class Main {
 		return dp[parent];
 	}
 
-	static void print() {
-		System.out.print(dp[root]);
+	static void print(int result) {
+		System.out.print(result);
 	}
 }
