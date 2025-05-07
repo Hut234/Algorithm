@@ -22,7 +22,6 @@ public class Main {
     }
 
     static void recur(int idx, int sum) {
-        if (idx == 11) return;
         if (sum > idx) return;
         if (sum == idx) {
             dp[idx]++;
