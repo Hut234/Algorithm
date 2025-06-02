@@ -1,53 +1,60 @@
-import java.io.*;
-import java.util.*;
-class Main {
-	private static int N, M;
-	private static int [] DX = {0, 0, -1, 1};
-	private static int [] DY = {1, -1, 0, 0};
-	private static boolean[][] VISITED;
-	private static int[][] INFO;
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		String[] NM = br.readLine().split(" ");
-		N = Integer.parseInt(NM[0]);
-		M = Integer.parseInt(NM[1]);
-		VISITED = new boolean[N][M];
-		INFO = new int[N][M];
-		
-		for(int i=0; i<N; i++) {
-			String[] str = br.readLine().split("");
-			for(int j=0; j<M; j++) {
-				if(str[j].equals("1")) INFO[i][j] = 1;
-			}
-		}
-		bfs(0, 0);
-		System.out.println(INFO[N-1][M-1]);
-	}
-	private static void bfs(int x, int y) {
-		Queue<int[]> q = new LinkedList<>();
-		VISITED[x][y] = true;
-		
-		q.offer(new int[] {x, y});
-		int[] cur;
-		int moveX, moveY;
-		while(!q.isEmpty()) {
-			cur = q.poll();
-			//상하좌우 탐색
-			for(int i=0; i<4; i++) {
-				moveX = cur[0] + DX[i];
-				moveY = cur[1] + DY[i];
-				
-				//좌표 범위 유효성 검사 : 0~N-1 까지 범위 가능
-				if(moveX>=0 && moveX<N && moveY>=0 && moveY<M) {
-					//이동 가능한지 확인
-					if(INFO[moveX][moveY]==1 && !VISITED[moveX][moveY]) {
-						VISITED[moveX][moveY] = true;
-						INFO[moveX][moveY] = INFO[cur[0]][cur[1]] +1;
-						q.offer(new int[] {moveX, moveY});
-					}
-				}
-				
-			}
-		}
-	}
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+
+public class Main {
+
+    static Scanner sc = new Scanner(System.in);
+    static StringBuilder sb = new StringBuilder();
+
+    static int N;
+    static int M;
+    static int[][] dist;
+    static String[] mazes;
+
+    public static void main(String[] args) {
+        getInput();
+        solve();
+    }
+
+    static int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+    static void solve() {
+        Queue<Integer[]> queue = new LinkedList<>();
+        queue.offer(new Integer[]{0, 0});
+        dist[0][0] = 1;
+        while (!queue.isEmpty()) {
+            Integer[] cur = queue.poll();
+            for (int i = 0; i < 4; i++) {
+                int nextX = cur[0] + directions[i][0];
+                int nextY = cur[1] + directions[i][1];
+                if (isOutOfBoundary(nextX, nextY) || mazes[nextX].charAt(nextY) == '0' || dist[nextX][nextY] <= dist[cur[0]][cur[1]] + 1)
+                    continue;
+                dist[nextX][nextY] = dist[cur[0]][cur[1]] + 1;
+                queue.offer(new Integer[]{nextX, nextY});
+            }
+        }
+
+        System.out.print(dist[N - 1][M - 1]);
+    }
+
+    static boolean isOutOfBoundary(int x, int y) {
+        return x < 0 || x >= N || y < 0 || y >= M;
+    }
+
+
+    static void getInput() {
+        N = sc.nextInt();
+        M = sc.nextInt();
+        dist = new int[N][M];
+        for (int i = 0; i < N; i++) {
+            Arrays.fill(dist[i], Integer.MAX_VALUE);
+        }
+
+        mazes = new String[N];
+        for (int i = 0; i < N; i++) {
+            mazes[i] = sc.next();
+        }
+    }
 }
