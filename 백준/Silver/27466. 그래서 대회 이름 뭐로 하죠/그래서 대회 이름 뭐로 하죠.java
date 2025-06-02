@@ -1,71 +1,52 @@
-import java.util.*;
-import java.io.*;
-class Main{
-    private static List<String> AAC = new ArrayList<>();
-	private static int ACOUNT = 2;
-	private static int CCOUNT = 1;
-	
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		String[] NM = br.readLine().split(" ");
-		int N = Integer.parseInt(NM[0]);
-		int M = Integer.parseInt(NM[1]);
-		StringBuilder sb = new StringBuilder();
-		while(N-->0) {
-			char c = (char)br.read();
-			if(check(c)) sb.append(c);
-		}
-		
-		if(ACOUNT + CCOUNT != 0) {
-			System.out.println("NO");
-			return;
-		}
-		
-		AAC.sort(Comparator.naturalOrder());
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
-		if(M == 3) {
-			sb.setLength(0);
-            System.out.println("YES");
-			System.out.print(sb.append(AAC.get(0)).append(AAC.get(1)).append(AAC.get(2)));
-			return;
-		}
-		String tmp = sb.substring(0, M-3);
-		sb.setLength(0);
-		sb.append(tmp).append(AAC.get(0)).append(AAC.get(1)).append(AAC.get(2));
-        System.out.println("YES");
-		System.out.print(sb);
+public class Main {
+
+
+	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+	static int N;
+	static int M;
+	static String S;
+	static StringBuilder sb = new StringBuilder();
+
+	public static void main(String[] args) throws IOException {
+		getInput();
+		solve();
 	}
-    private static boolean check(char c) {
-		if(ACOUNT == 0 && CCOUNT == 0) return true;
-		if(ACOUNT != 0 && CCOUNT == 0) {
-			if(c == 'A') {
-				AAC.add(String.valueOf(c));
-				ACOUNT--;
-				return false;
-			} else {
-				return true;
+
+	static void solve() {
+		if (S.contains("A")) {
+			dfs(0, 0, new char[M]);
+		}
+		System.out.print(sb.length() == 0 ? "NO" : "YES\n" + sb);
+	}
+
+	static void dfs(int depth, int start, char[] output) {
+		if (sb.length() == 0)  {
+			if (depth == M) {
+				if (output[M - 1] == 'A' || output[M - 1] == 'E' || output[M - 1] == 'I' || output[M - 1] == 'O'
+					|| output[M - 1] == 'U' || output[M - 2] != 'A' || output[M - 3] != 'A')
+					return;
+
+				for (char o : output) {
+					sb.append(o);
+				}
+			}
+
+			for (int i = start; i < N; i++) {
+				output[depth] = S.charAt(i);
+				dfs(depth + 1, i + 1, output);
 			}
 		}
-		if(ACOUNT == 0 && CCOUNT != 0) {
-			if(c != 'A' && c != 'E' && c != 'I' && c != 'O' && c != 'U') {
-				AAC.add(String.valueOf(c));
-				CCOUNT--;
-				return false;
-			} else {
-				return true;
-			}
-		}
-		switch(c) {
-			case 'A': 
-				AAC.add(String.valueOf(c));
-				ACOUNT--;
-				return false;
-			case 'E':  case 'I':  case 'O':  case 'U': return true;
-			default : 
-				AAC.add(String.valueOf(c));
-				CCOUNT--;
-				return false;
-		}
-    }
-	
+	}
+
+	static void getInput() throws IOException {
+		String[] NM = br.readLine().split(" ");
+		N = Integer.parseInt(NM[0]);
+		M = Integer.parseInt(NM[1]);
+		S = br.readLine();
+	}
 }
