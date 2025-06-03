@@ -1,52 +1,53 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.util.Scanner;
 
 public class Main {
 
-
-	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	static Scanner sc = new Scanner(System.in);
+	static StringBuilder sb = new StringBuilder();
 
 	static int N;
 	static int M;
 	static String S;
-	static StringBuilder sb = new StringBuilder();
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
 		getInput();
 		solve();
 	}
 
 	static void solve() {
-		if (S.contains("A")) {
-			dfs(0, 0, new char[M]);
-		}
-		System.out.print(sb.length() == 0 ? "NO" : "YES\n" + sb);
-	}
-
-	static void dfs(int depth, int start, char[] output) {
-		if (sb.length() == 0)  {
-			if (depth == M) {
-				if (output[M - 1] == 'A' || output[M - 1] == 'E' || output[M - 1] == 'I' || output[M - 1] == 'O'
-					|| output[M - 1] == 'U' || output[M - 2] != 'A' || output[M - 3] != 'A')
-					return;
-
-				for (char o : output) {
-					sb.append(o);
+		boolean findingLast = true;
+		int countA = 0;
+		for (int i = S.length() - 1; i > -1; i--) {
+			if (findingLast) {
+				if (S.charAt(i) == 'A' || S.charAt(i) == 'E' || S.charAt(i) == 'I' || S.charAt(i) == 'O' || S.charAt(i) == 'U') continue;
+				sb.append(S.charAt(i));
+				findingLast = false;
+			} else {
+				if (countA < 2) {
+					if (S.charAt(i) == 'A') {
+						countA++;
+						sb.append('A');
+					}
+				} else {
+					if (sb.length() < M) {
+						sb.append(S.charAt(i));
+					} else {
+						break;
+					}
 				}
 			}
+		}
 
-			for (int i = start; i < N; i++) {
-				output[depth] = S.charAt(i);
-				dfs(depth + 1, i + 1, output);
-			}
+		if (sb.length() < M) {
+			System.out.print("NO");
+		} else {
+			System.out.print("YES\n" + sb.reverse());
 		}
 	}
 
-	static void getInput() throws IOException {
-		String[] NM = br.readLine().split(" ");
-		N = Integer.parseInt(NM[0]);
-		M = Integer.parseInt(NM[1]);
-		S = br.readLine();
+	static void getInput() {
+		N = sc.nextInt();
+		M = sc.nextInt();
+		S = sc.next();
 	}
 }
