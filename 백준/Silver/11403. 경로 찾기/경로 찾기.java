@@ -9,7 +9,6 @@ public class Main {
     static List<Integer>[] graph;
     static boolean[][] visited;
     static String[][] maps;
-    static int[][] result;
 
     public static void main(String[] args) {
         getInput();
@@ -23,9 +22,9 @@ public class Main {
             }
         }
 
-        for (int[] values : result) {
-            for (int value : values) {
-                sb.append(value).append(" ");
+        for (boolean[] flags : visited) {
+            for (boolean flag : flags) {
+                sb.append(flag ? 1 : 0).append(" ");
             }
             sb.append("\n");
         }
@@ -33,7 +32,6 @@ public class Main {
     }
 
     static void dfs(int root, int next) {
-        result[root][next] = 1;
         visited[root][next] = true;
         for (int i = 0; i < N; i++) {
             if ("0".equals(maps[next][i]) || visited[root][i]) continue;
@@ -47,7 +45,6 @@ public class Main {
         graph = new List[N];
         visited = new boolean[N][N];
         maps = new String[N][N];
-        result = new int[N][N];
 
         for (int i = 0; i < N; i++) {
             graph[i] = new ArrayList<>();
