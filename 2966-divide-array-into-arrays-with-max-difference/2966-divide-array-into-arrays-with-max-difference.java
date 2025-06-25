@@ -2,8 +2,7 @@ import java.util.Arrays;
 
 class Solution {
     public int[][] divideArray(int[] nums, int k) {
-        int len = nums.length;
-        int n = len / 3;
+        int n = nums.length / 3;
         int[][] answer = new int[n][3];
 
         Arrays.sort(nums);
