@@ -3,24 +3,19 @@ import java.util.ArrayList;
 class Solution {
     public List<Integer> findKDistantIndices(int[] nums, int key, int k) {
         List<Integer> answer = new ArrayList<>();
-        int checkedIndex = 0;
-        for (int i = 0; i < nums.length;) {
+        int len = nums.length;
+        int beforeIndex = 0;
+        for (int i = 0; i < len; i++) {
             if (nums[i] == key) {
-                boolean flag = true;
-                int j = Integer.max(checkedIndex, i - k);
-                for (; j < Integer.min(i + k + 1, nums.length); j++) {
-                    if (i < j && nums[j] == key) {
-                        i = j;
-                        flag = false;
-                        break;
-                    }
-                    answer.add(j);
+                int from = Integer.max(i - k, beforeIndex);
+                int to = Integer.min(i + k + 1, len);
+                for (; from < to; from++) {
+                    answer.add(from);
                 }
-                checkedIndex = j;
-                if (flag) i = j;
-            } else i++;
-
+                beforeIndex = from;
+            }
         }
+
         return answer;
     }
 }
