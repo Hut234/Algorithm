@@ -8,12 +8,10 @@ class Solution {
         Arrays.sort(nums);
 
         int start = 0;
-        for (int i = 0; i < n; ++i) {
-            int end = Integer.min(start + 3 - 1, len);
+        for (int i = 0; i < n; ++i, start += 3) {
+            int end = Integer.min(start + 2, len);
             if (nums[end] - nums[start] > k) return new int[0][0];
-            for (int j = 0; j < 3; ++j) {
-                answer[i][j] = nums[start++];
-            }
+            System.arraycopy(nums, start, answer[i], 0, 3);
         }
         return answer;
     }
