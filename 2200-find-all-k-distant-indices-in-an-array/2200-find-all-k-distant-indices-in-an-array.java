@@ -11,13 +11,13 @@ class Solution {
                 for (; j < Integer.min(i + k + 1, nums.length); j++) {
                     if (i < j && nums[j] == key) {
                         i = j;
-                        checkedIndex = j;
                         flag = false;
                         break;
                     }
                     answer.add(j);
                 }
-                if (flag) i = j + 1;
+                checkedIndex = j;
+                if (flag) i = j;
             } else i++;
 
         }
