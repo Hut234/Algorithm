@@ -1,18 +1,17 @@
 class Solution {
     public int solution(int[][] sizes) {
         
-        int max = 0;
         int min = 0;
-        
-        for (int[] size : sizes) {
-            int max2 = Integer.max(size[0], size[1]);
-            int min2 = Integer.min(size[0], size[1]);
+        int max = 0;
+        int len = sizes.length;
+        for (int i = 0; i < len; i++) {
+            int shorter = Integer.min(sizes[i][0], sizes[i][1]);
+            int longer = Integer.max(sizes[i][0], sizes[i][1]);
             
-            max = Integer.max(max, max2);
-            min = Integer.max(min, min2);
+            max = Integer.max(max, longer);
+            min = Integer.max(min, shorter);
         }
-        
-        
-        return max*min;
+
+        return min * max;
     }
 }
