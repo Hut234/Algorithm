@@ -1,50 +1,54 @@
 import java.util.*;
-
 class Solution {
-    
-    private static int length;
-    private static String[] numbers;
-    private static boolean[] visited;
-    private static Set<Integer> set = new HashSet<>();
-    
-    public int solution(String numbers) {
-        length = numbers.length();
-        visited = new boolean[length];
-        Solution.numbers = numbers.split("");
 
-        recur("");
-        return set.size();
+    static String numberStr;
+    static boolean[] isPrime = new boolean[10000000];
+    static boolean[] visited;
+    static Set<Integer> numbers = new HashSet<>();
+    static int length;
+    public int solution(String word) {
+        numberStr = word;
+        length = word.length();
+        visited = new boolean[length];
+        eratosthenes(9999999);
+        permutation(0, 0);
+        return solve();
     }
     
-    private static void recur(String str) {
-        if(isPrime(str)) {
-            set.add(Integer.valueOf(str));
+    static int solve() {
+        int answer = 0;
+        for (Integer value : numbers) {
+            if (isPrime[value]) answer++;
         }
-
-        for (int i=0; i < length; i++) {
+        return answer;
+    }
+    
+    static void permutation(int before, int depth) {
+        if (depth == length) return;
+        
+        for (int i = 0; i < length; i++) {
             if (visited[i]) continue;
-
             visited[i] = true;
-            recur(str.concat(numbers[i]));
+            int newValue = before * 10 + numberStr.charAt(i) - '0';
+            numbers.add(newValue);
+            permutation(newValue, depth + 1);
             visited[i] = false;
         }
     }
     
-    private static boolean isPrime(String str) {
-        if (str.length() == 0) return false;
-
-        int value = Integer.parseInt(str);
-        if (value == 1 || value == 0) return false;
-
-        boolean flag = true;
-
-        for (int i = 2; i <= Math.sqrt(value) ; i++) {
-            if (value %i == 0) {
-                flag= false;
-                break;
+    static void eratosthenes(int n) {
+        Arrays.fill(isPrime, true);
+        
+        isPrime[0] = false;
+        isPrime[1] = false;
+        
+        int sqrtN = (int) Math.sqrt(n);
+        for (int i = 2; i <= sqrtN; i++) {
+            if (isPrime[i]) {
+                for (int j = i * i; j <= n; j += i) {
+                    isPrime[j] = false;
+                }
             }
         }
-
-        return flag;
     }
 }
