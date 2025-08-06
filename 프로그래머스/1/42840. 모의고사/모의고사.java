@@ -1,23 +1,34 @@
 import java.util.*;
+
 class Solution {
-    static int[] one = {1, 2, 3, 4, 5};
-    static int[] two = {2, 1, 2, 3, 2, 4, 2, 5};
-    static int[] three = {3, 3, 1, 1, 2, 2, 4, 4, 5, 5};
-    public int[] solution(int[] answers) {
-        int a = 0, b = 0, c = 0, tmp;
-        for(int i=0; i<answers.length; i++) {
-            if (one[i%5] == answers[i]) a++;
-            if (two[i%8] == answers[i]) b++;
-            if (three[i%10] == answers[i]) c++;
-        }
-        int max = Integer.max(a, Integer.max(b, c));
-        List<Integer> result = new ArrayList<>();
-        if (max == a) result.add(1);
-        if (max == b) result.add(2);
-        if (max == c) result.add(3);
+
+    public List<Integer> solution(int[] answers) {
+        int answerCountA = 0;
+        int answerCountB = 0;
+        int answerCountC = 0;
         
-        // 스트림 사용 시 시간 소요 증가
-        return result.stream().mapToInt(Integer::intValue).toArray();
-		
+        int[] answerA = {1, 2, 3, 4, 5};
+        int lenA = answerA.length;
+        int[] answerB = {2, 1, 2, 3, 2, 4, 2, 5};
+        int lenB = answerB.length;
+        int[] answerC = {3, 3, 1, 1, 2, 2, 4, 4, 5, 5};
+        int lenC = answerC.length;
+        
+        int len = answers.length;
+        for (int i = 0; i < len; i++) {
+            int answer = answers[i];
+            if (answerA[i % lenA] == answer) answerCountA++;
+            if (answerB[i % lenB] == answer) answerCountB++;
+            if (answerC[i % lenC] == answer) answerCountC++;
+        }
+        
+        int max = Integer.max(Integer.max(answerCountA, answerCountB), answerCountC);
+        
+        List<Integer> result = new ArrayList<Integer>();
+        if (max == answerCountA) result.add(1);
+        if (max == answerCountB) result.add(2);
+        if (max == answerCountC) result.add(3);
+        
+        return result;   
     }
 }
