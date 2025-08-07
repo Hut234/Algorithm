@@ -1,4 +1,5 @@
 class Solution {
+    boolean found;
     int count = 0;
 	int answer = 0;
     public int solution(String word) {
@@ -7,8 +8,11 @@ class Solution {
     }
     
     void solve(String[] alphabets, String findWord, String word, int depth) {
+        if (found) return;
+        
         if (findWord.equals(word)) {
             answer = count;
+            found = true;
             return;
         }
 
