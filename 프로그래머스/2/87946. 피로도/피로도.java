@@ -1,31 +1,32 @@
 class Solution {
-    private static int length;
-    private static int result;
-    private static int[][] dungeons;
-    private static boolean[] visited;
     
+    static int answer;
+    static int size;
+    static boolean[] visited;
     public int solution(int k, int[][] dungeons) {
-        Solution.length = dungeons.length;
-        Solution.dungeons = dungeons;
-        Solution.visited = new boolean[length];
-
-        recur(0, k, 0);
-        return result;
+        size = dungeons.length;
+        visited = new boolean[size]; 
+        dfs(dungeons, 0, 0, k);
+        return answer;
     }
-
-    private static void recur(int idx, int fatigue, int cnt){
-        // 피로도가 1미만
-        if (fatigue < 1) return;
-        // 방문수
-        if (cnt > result) result = cnt;
-        // base case
-        if (idx == length) return;
-
-        for (int i = 0; i < length; i++) {
-            if (visited[i] || dungeons[i][0] > fatigue) continue;
+    
+    void dfs(int[][] dungeons, int depth, int count, int energy) {
+        if (depth == size) {
+            answer = Integer.max(answer, count);
+            return;
+        }
+        
+        for (int i = 0; i < size; i++) {
+            if (visited[i]) continue;
+            
             visited[i] = true;
-            recur(idx+1, fatigue -dungeons[i][1], cnt+1);
+            if (energy >= dungeons[i][0]) {
+                dfs(dungeons, depth + 1, count + 1, energy - dungeons[i][1]);
+            } else {
+                dfs(dungeons, depth + 1, count, energy);
+            }
             visited[i] = false;
-        }  
+        }
     }
+    
 }
