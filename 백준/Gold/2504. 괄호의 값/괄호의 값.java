@@ -1,89 +1,83 @@
 import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Scanner;
 
 public class Main {
 
 	public static void main(String[] args) {
+		String[] inputs = new Scanner(System.in).next().split("");
 
-		Scanner sc = new Scanner(System.in);
-		String[] inputs = sc.nextLine().split("");
-
-		ArrayDeque<String> stack = new ArrayDeque<>();
 		int len = inputs.length;
-
-		if (len % 2 != 0) {
-			System.out.println(0);
-			return;
-		}
-
+		Deque<String> stack = new ArrayDeque<>();
 		for (int i = 0; i < len; i++) {
-			String input = inputs[i];
-			if (isOpen(input)) {
-				stack.push(input);
+			if (isOpen(inputs[i])) {
+				stack.push(inputs[i]);
 			} else {
-				int sum = 0;
-
 				if (stack.isEmpty()) {
-					System.out.println(0);
+					System.out.print(0);
 					return;
-				}
+				} else {
+					int sum = 0;
+					String opposite = stack.pop();
 
-				String output = stack.pop();
-				while (isNumber(output)) {
-					sum += Integer.parseInt(output);
-					if (stack.isEmpty()) {
+					while (isNumber(opposite)) {
+						sum += Integer.parseInt(opposite);
+
+						if (stack.isEmpty()) {
+							System.out.print(0);
+							return;
+						}
+
+						String output = stack.pop();
+						if (isClosed(output)) {
+							System.out.print(0);
+							return;
+						}
+						opposite = output;
+					}
+
+					if (isNotPair(opposite, inputs[i])) {
 						System.out.println(0);
 						return;
 					}
-					output = stack.pop();
-				}
 
-				if (isNotPair(output, input)) {
-					System.out.println(0);
-					return;
-				}
-
-				if (sum == 0) {
-					if ("(".equals(output))
-						stack.push("2");
+					int value = 0;
+					if ("(".equals(opposite))
+						value = 2;
 					else
-						stack.push("3");
-				} else {
-					if ("(".equals(output))
-						stack.push(sum * 2 + "");
+						value = 3;
+					if (sum != 0)
+						stack.push(sum * value + "");
 					else
-						stack.push(sum * 3 + "");
+						stack.push(value + "");
 				}
 			}
 		}
-
 		int answer = 0;
 		while (!stack.isEmpty()) {
-
-			String cur = stack.pop();
-			if (isNumber(cur))
-				answer += Integer.parseInt(cur);
-			else {
-				System.out.println(0);
+			if (isNumber(stack.peek())) {
+				answer += Integer.parseInt(stack.pop());
+			} else {
+				System.out.print(0);
 				return;
 			}
 		}
-		System.out.println(answer);
+		System.out.print(answer);
 	}
 
-	public static boolean isOpen(String str) {
+	static boolean isNotPair(String open, String close) {
+		return !("(".equals(open) && ")".equals(close) || "[".equals(open) && "]".equals(close));
+	}
+
+	static boolean isOpen(String str) {
 		return "(".equals(str) || "[".equals(str);
 	}
 
-	public static boolean isClosed(String str) {
+	static boolean isClosed(String str) {
 		return ")".equals(str) || "]".equals(str);
 	}
 
-	public static boolean isNumber(String str) {
-		return !isOpen(str) && !isClosed(str);
-	}
-
-	public static boolean isNotPair(String open, String close) {
-		return !("(".equals(open) && ")".equals(close) || "[".equals(open) && "]".equals(close));
+	static boolean isNumber(String str) {
+		return !(isOpen(str) || isClosed(str));
 	}
 }
