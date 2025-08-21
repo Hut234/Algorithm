@@ -1,20 +1,18 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
 public class Main {
 
-	static StringBuilder sb = new StringBuilder();
-
 	static int N;
-	static String[] map;
+	static List<Integer> counts;
+	static char[][] map;
 	static boolean[][] visited;
-	static List<Integer> result = new ArrayList<>();
 
 	public static void main(String[] args) throws IOException {
 		getInput();
@@ -22,60 +20,57 @@ public class Main {
 	}
 
 	static void solve() {
-		int groupCount = 0;
 		for (int i = 0; i < N; i++) {
 			for (int j = 0; j < N; j++) {
-				if (map[i].charAt(j) == '0' || visited[i][j])
-					continue;
-				groupCount++;
-				result.add(bfs(i, j));
+				if (visited[i][j] || map[i][j] == '0') continue;
+				bfs(i, j);
 			}
 		}
 
-		Collections.sort(result);
-		result.add(0, groupCount);
-		for (Integer value : result) {
-			sb.append(value).append("\n");
+		Collections.sort(counts);
+
+		StringBuilder sb = new StringBuilder();
+		sb.append(counts.size()).append("\n");
+		for (Integer count : counts) {
+			sb.append(count).append("\n");
 		}
 		System.out.print(sb);
 	}
 
-	static int[][] direction = {{1, 0}, {-1, 0}, {0, -1}, {0, 1}};
+	static int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+	static void bfs(int row, int column) {
+		Queue<int[]> queue = new ArrayDeque<>();
+		visited[row][column] = true;
+		queue.offer(new int[]{row, column});
 
-	static Integer bfs(int x, int y) {
-		Queue<Integer[]> queue = new LinkedList<>();
-		visited[x][y] = true;
-		queue.add(new Integer[] {x, y});
-
-		int buildingCount = 0;
+		int count = 0;
 		while (!queue.isEmpty()) {
-			Integer[] poll = queue.poll();
-			buildingCount++;
-			for (int i = 0; i < 4; i++) {
-				int nextX = poll[0] + direction[i][0];
-				int nextY = poll[1] + direction[i][1];
-				if (isOutOfBoundary(nextX, nextY))
-					continue;
-				if (map[nextX].charAt(nextY) == '0' || visited[nextX][nextY])
-					continue;
-				visited[nextX][nextY] = true;
-				queue.add(new Integer[] {nextX, nextY});
+			int[] cur = queue.poll();
+			count++;
+			for (int[] direction : directions) {
+				int nextRow = cur[0] + direction[0];
+				int nextColumn = cur[1] + direction[1];
+				if (isOutOfBoundary(nextRow, nextColumn) || visited[nextRow][nextColumn] || map[nextRow][nextColumn] == '0') continue;
+				visited[nextRow][nextColumn] = true;
+				queue.offer(new int[]{nextRow, nextColumn});
 			}
 		}
-		return buildingCount;
+		counts.add(count);
 	}
 
-	static boolean isOutOfBoundary(int nextX, int nextY) {
-		return nextX < 0 || nextX >= N || nextY < 0 || nextY >= N;
+	static boolean isOutOfBoundary(int row, int column) {
+		return row < 0 || row >= N || column < 0 || column >= N;
 	}
 
 	static void getInput() throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
-		map = new String[N];
+
+		counts = new ArrayList<>();
+		map = new char[N][N];
 		visited = new boolean[N][N];
 		for (int i = 0; i < N; i++) {
-			map[i] = br.readLine();
+			map[i] = br.readLine().toCharArray();
 		}
 	}
 }
