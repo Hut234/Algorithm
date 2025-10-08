@@ -7,18 +7,18 @@ public class Main {
 		int S = sc.nextInt();
 		int M = sc.nextInt();
 
-		int answer = 0;
 		int e = 1, s = 1, m = 1;
+		int year = 1;
 		while (true) {
-			answer++;
 			if (e == E && s == S && m == M) {
-				System.out.print(answer);
-				return;
+				System.out.println(year);
+				break;
 			}
 
-			e = (++e - 1) % 15 + 1;
-			s = (++s - 1) % 28 + 1;
-			m = (++m - 1) % 19 + 1;
+			e = e % 15 + 1;
+			s = s % 28 + 1;
+			m = m % 19 + 1;
+			year++;
 		}
 	}
 }
