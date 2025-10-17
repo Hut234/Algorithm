@@ -1,12 +1,12 @@
 import java.io.*;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Queue;
 import java.util.StringTokenizer;
 
 class Main {
 
+	static int answer = -1;
+	static boolean flag;
 	static int n;
 	static int m;
 	static int start;
@@ -20,24 +20,21 @@ class Main {
 	}
 
 	private static void solve() {
-		Queue<int[]> queue = new ArrayDeque<>();
-		queue.offer(new int[]{start, 0});
-		visited[start] = true;
-
-		int answer = -1;
-		while (!queue.isEmpty()) {
-			int[] current = queue.poll();
-			if (current[0] == end) {
-				answer = current[1];
-				break;
-			}
-			for (int next : relations[current[0]]) {
-				if (visited[next]) continue;
-				queue.offer(new int[]{next, current[1] + 1});
-				visited[next] = true;
-			}
-		}
+		dfs(start, 0);
 		System.out.print(answer);
+	}
+
+	private static void dfs(int current, int count) {
+		if (current == end) {
+			answer = count;
+			flag = true;
+		}
+		if (flag) return;
+		visited[current] = true;
+		for (int next : relations[current]) {
+			if (visited[next]) continue;
+			dfs(next, count + 1);
+		}
 	}
 
 
